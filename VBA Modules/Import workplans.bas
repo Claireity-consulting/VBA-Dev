@@ -6,14 +6,14 @@ Sub Import_Workplans()
     Dim IW_Sec As Long
     Dim LResult(1 To 6) As Date
     IW_StartTime = Timer
-'Stop updating screen and automatic calculation (for speed gains)
+    'Stop updating screen and automatic calculation (for speed gains)
     With Application
         .ScreenUpdating = False
         .Calculation = xlCalculationManual
     End With
-'Call subroutine for Importing Workplans and return the time needed to do so
+    'Call subroutine for Importing Workplans and return the time needed to do so
     Call IW(LResult)
-'Re-establish updating screen and automatic calculation
+    'Re-establish updating screen and automatic calculation
     With Application
         .ScreenUpdating = True
         .Calculation = xlCalculationAutomatic
@@ -51,7 +51,7 @@ Sub IW(LResult)
     Next IW_i
     'Fix filters up to the end of the range
     Workbooks(Second_workbook).Sheets("Update workplan").AutoFilterMode = False
-    
+
     'Format cells up to the last filled cell
     With Workbooks(Second_workbook).Sheets("Update workplan")
         .Range("A5:CW" & .Cells(.Rows.Count, 1).End(xlUp).Row).AutoFilter
@@ -64,7 +64,7 @@ Sub IW(LResult)
         .Range("A6:CW" & .Cells(.Rows.Count, 1).End(xlUp).Row).Font.Size = 8
         .Range("A6:CW" & .Cells(.Rows.Count, 1).End(xlUp).Row).HorizontalAlignment = xlCenter
     End With
-    
+
     ' Calculate Formula date of updates 
     Ldate = Now()
     With Workbooks(Second_workbook).Sheets("Update workplan")
@@ -102,7 +102,7 @@ End Sub
 Sub OpenWB(WBFilename, WBFilename_path)
     Dim filetoopen As Variant
     On Error GoTo 10
-        Workbooks.Open Filename:=WBFilename_path, Password:="", UpdateLinks:=0, ReadOnly:=True
+    Workbooks.Open Filename:=WBFilename_path, Password:="", UpdateLinks:=0, ReadOnly:=True
     Exit Sub
 
 10  filetoopen = Application.GetOpenFilename("Excel files (*.xl*), *.xls*")
@@ -119,7 +119,7 @@ Sub Copy_wb(Second_workbook, WBFilename)
         .Range("A7:CW" & Workbooks(WBFilename).Sheets("Workplan").Cells(.Rows.Count, 1).End(xlUp).Row).Copy
     End With
 
-' Calculating the first empty row after the previous import
+    ' Calculating the first empty row after the previous import
     With Workbooks(Second_workbook).Sheets("Update workplan")
         .Cells(.Rows.Count, 1).End(xlUp).Offset(1, 0).PasteSpecial Paste:=xlPasteFormats
         .Cells(.Rows.Count, 1).End(xlUp).Offset(1, 0).PasteSpecial Paste:=xlPasteValues
@@ -133,13 +133,13 @@ Sub CloseWB(WBFilename)
 End Sub
 
 Public Function SharePointURLtoUNC(sURL)
-  Dim bIsSSL As Boolean
-  bIsSSL = InStr(1, sURL, "https:") > 0
-  sURL = Replace(Replace(sURL, "/", "\"), "%20", " ")
-  sURL = Replace(Replace(sURL, "https:", vbNullString), "http:", vbNullString)
-  sURL = Replace(sURL, Split(sURL, "\")(2), Split(sURL, "\")(2) & "@SSL\DavWWWRoot")
-  If Not bIsSSL Then sURL = Replace(sURL, "@SSL\", vbNullString)
-  SharePointURLtoUNC = sURL
+    Dim bIsSSL As Boolean
+    bIsSSL = InStr(1, sURL, "https:") > 0
+    sURL = Replace(Replace(sURL, "/", "\"), "%20", " ")
+    sURL = Replace(Replace(sURL, "https:", vbNullString), "http:", vbNullString)
+    sURL = Replace(sURL, Split(sURL, "\")(2), Split(sURL, "\")(2) & "@SSL\DavWWWRoot")
+    If Not bIsSSL Then sURL = Replace(sURL, "@SSL\", vbNullString)
+    SharePointURLtoUNC = sURL
 End Function
 
 
